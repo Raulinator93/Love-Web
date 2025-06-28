@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Für meine Liebe 💖</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom right, #ffc0cb, #ffe4e1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    h1 {
+      color: #d6336c;
+      font-size: 2.5rem;
+    }
+
+    h2 {
+      font-size: 1.5rem;
+      color: #cc3366;
+    }
+
+    .image-box {
+      margin: 2rem 0;
+      max-width: 90%;
+    }
+
+    .image-box img {
+      max-width: 100%;
+      border-radius: 1rem;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    .quote {
+      font-size: 1.2rem;
+      color: #444;
+      margin-top: 1rem;
+      background: white;
+      padding: 1rem;
+      border-radius: 1rem;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    }
+
+    #music-btn {
+      padding: 1rem 2rem;
+      background-color: #ff6699;
+      color: white;
+      font-size: 1.2rem;
+      border: none;
+      border-radius: 1rem;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      margin-top: 2rem;
+    }
+
+    footer {
+      margin-top: 3rem;
+      color: #888;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>💖 Für Dich </h1>
+  <h2>Wir sind schon <span id="Beziehungs-Dauer">...</span></h2>
+
+  <button id="music-btn" onclick="toggleMusic()">💕Love Button💕</button>
+
+  <div class="image-box">
+    <img id="daily-image" src="" alt="Liebesbild des Tages">
+    <div class="quote" id="daily-quote">Lade Liebe ...</div>
+  </div>
+
+  <footer>Mit ganz viel Liebe 💌</footer>
+
+  <audio id="bg-list" loop>
+    <source id="music" src="" type="audio/mpeg">
+    Dein Browser unterstützt kein Audio.
+  </audio>
+
+  <script>
+    // 💕 Beziehungsdauer berechnen
+    function berechneBeziehungsdauer(startDatum) {
+      const heute = new Date();
+      let jahre = heute.getFullYear() - startDatum.getFullYear();
+      let monate = heute.getMonth() - startDatum.getMonth();
+      let tage = heute.getDate() - startDatum.getDate();
+
+      if (tage < 0) {
+        monate -= 1;
+        const letzterMonat = new Date(heute.getFullYear(), heute.getMonth(), 0);
+        tage += letzterMonat.getDate();
+      }
+
+      if (monate < 0) {
+        jahre -= 1;
+        monate += 12;
+      }
+
+      return { jahre, monate, tage };
+    }
+
+    const startDate = new Date("2024-08-09"); // 💖 Euer Beziehungsstart
+    const dauer = berechneBeziehungsdauer(startDate);
+    const heute = new Date();
+    const dayNumber = Math.floor((heute - startDate) / (1000 * 60 * 60 * 24)) + 1;
+
+    const dauerText = `${dauer.jahre} Jahr${dauer.jahre !== 1 ? 'e' : ''}, ` +
+                      `${dauer.monate} Monat${dauer.monate !== 1 ? 'e' : ''} und ` +
+                      `${dauer.tage} Tag${dauer.tage !== 1 ? 'e' : ''}`;
+
+    document.getElementById("Beziehungs-Dauer").textContent = dauerText;
+
+    // 📸 Bilder automatisch laden
+    const images = [];
+    for (let i = 1; i <= 1; i++) {
+      const number = i.toString().padStart(2, '0');
+      images.push(`bilder/tag${number}.jpg`);
+    }
+
+    // 💬 Sprüche
+    const quotes = [
+      "Du bist mein Lieblingsmensch. ❤️",
+      "Mit dir vergeht jeder Tag wie im Flug.",
+      "Du machst mein Leben heller.",
+      "Ich liebe dein Lachen mehr als alles andere.",
+      "Jeder Moment mit dir ist ein Geschenk.",
+      "Du bist mein Zuhause.",
+      "Ich bin so dankbar für dich.",
+      "Du machst mein Herz tanzen.",
+      "Für dich würde ich die Sterne holen.",
+      "Ich liebe dich mehr als gestern und weniger als morgen.",
+    ];
+
+    // 🎵 Musikliste
+    const musiclist = [
+      "music/Perfect.mp3",
+      "music/RomanticFlight.mp3"
+    ];
+
+    // ⏳ Tagesabhängige Auswahl
+    const image = images[(dayNumber - 1) % images.length];
+    const quote = quotes[(dayNumber - 1) % quotes.length];
+    const music_selection = musiclist[(dayNumber - 1) % musiclist.length];
+
+    // 🌸 Inhalte einfügen
+    document.getElementById("daily-image").src = image;
+    document.getElementById("daily-quote").textContent = quote;
+    document.getElementById("music").src = music_selection;
+
+    // 🔊 Musiksteuerung
+    const audio = document.getElementById("bg-list");
+    const btn = document.getElementById("music-btn");
+    let isPlaying = false;
+
+    function toggleMusic() {
+      if (!isPlaying) {
+        audio.play().then(() => {
+          isPlaying = true;
+          btn.textContent = "⏸️ Musik pausieren";
+        }).catch(err => {
+          alert("Musik konnte nicht gestartet werden: " + err);
+        });
+      } else {
+        audio.pause();
+        isPlaying = false;
+        btn.textContent = "💕Love Button💕";
+      }
+    }
+  </script>
+</body>
+</html>
