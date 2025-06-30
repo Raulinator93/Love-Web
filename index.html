@@ -4,71 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Für meine Liebe 💖</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(to bottom right, #ffc0cb, #ffe4e1);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      text-align: center;
-      padding: 2rem;
-    }
-
-    h1 {
-      color: #d6336c;
-      font-size: 2.5rem;
-    }
-
-    h2 {
-      font-size: 1.5rem;
-      color: #cc3366;
-    }
-
-    .image-box {
-      margin: 2rem 0;
-      max-width: 90%;
-    }
-
-    .image-box img {
-      max-width: 100%;
-      border-radius: 1rem;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-    }
-
-    .quote {
-      font-size: 1.2rem;
-      color: #444;
-      margin-top: 1rem;
-      background: white;
-      padding: 1rem;
-      border-radius: 1rem;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-    }
-
-    #music-btn {
-      padding: 1rem 2rem;
-      background-color: #ff6699;
-      color: white;
-      font-size: 1.2rem;
-      border: none;
-      border-radius: 1rem;
-      cursor: pointer;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-      margin-top: 2rem;
-    }
-
-    footer {
-      margin-top: 3rem;
-      color: #888;
-      font-size: 0.9rem;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <nav>
+    <ul>
+      <li><a href="#start">Start</a></li>
+      <li><a href="RezeptOfTheDay.html">Rezept of the Day</a></li>
+      <li><a href="playlist.html">Unsere Playlist</a></li>
+    </ul>
+  </nav>
   <h1>💖 Für Dich </h1>
   <h2>Wir sind schon <span id="Beziehungs-Dauer">...</span></h2>
 
@@ -81,8 +26,7 @@
 
   <footer>Mit ganz viel Liebe 💌</footer>
 
-  <audio id="bg-list" loop>
-    <source id="music" src="" type="audio/mpeg">
+  <audio id="bg-list" loop src="">
     Dein Browser unterstützt kein Audio.
   </audio>
 
@@ -119,43 +63,32 @@
 
     document.getElementById("Beziehungs-Dauer").textContent = dauerText;
 
-    // 📸 Bilder automatisch laden
-    const images = [];
-    for (let i = 1; i <= 1; i++) {
-      const number = i.toString().padStart(2, '0');
-      images.push(`bilder/tag${number}.jpg`);
-    }
+    // 📦 Daten aus Data.json laden
+    let images = [];
+    let quotes = [];
+    let musiclist = [];
 
-    // 💬 Sprüche
-    const quotes = [
-      "Du bist mein Lieblingsmensch. ❤️",
-      "Mit dir vergeht jeder Tag wie im Flug.",
-      "Du machst mein Leben heller.",
-      "Ich liebe dein Lachen mehr als alles andere.",
-      "Jeder Moment mit dir ist ein Geschenk.",
-      "Du bist mein Zuhause.",
-      "Ich bin so dankbar für dich.",
-      "Du machst mein Herz tanzen.",
-      "Für dich würde ich die Sterne holen.",
-      "Ich liebe dich mehr als gestern und weniger als morgen.",
-    ];
+    fetch('Data.json')
+      .then(response => response.json())
+      .then(data => {
+      images = data.images || [];
+      quotes = data.quotes || [];
+      musiclist = data.musiclist || [];
 
-    // 🎵 Musikliste
-    const musiclist = [
-      "music/Perfect.mp3",
-      "music/RomanticFlight.mp3"
-    ];
+      // ⏳ Tagesabhängige Auswahl (muss nach dem Laden erfolgen)
+      const image = images[(dayNumber - 1) % images.length];
+      const quote = quotes[(dayNumber - 1) % quotes.length];
+      const music_selection = musiclist[(dayNumber - 1) % musiclist.length];
 
-    // ⏳ Tagesabhängige Auswahl
-    const image = images[(dayNumber - 1) % images.length];
-    const quote = quotes[(dayNumber - 1) % quotes.length];
-    const music_selection = musiclist[(dayNumber - 1) % musiclist.length];
-
-    // 🌸 Inhalte einfügen
-    document.getElementById("daily-image").src = image;
-    document.getElementById("daily-quote").textContent = quote;
-    document.getElementById("music").src = music_selection;
-
+      // 🌸 Inhalte einfügen
+      document.getElementById("daily-image").src = image;
+      document.getElementById("daily-quote").textContent = quote;
+      document.getElementById("bg-list").src = music_selection;
+      })
+      .catch(err => {
+      document.getElementById("daily-quote").textContent = "Fehler beim Laden der Daten.";
+      });
+      
     // 🔊 Musiksteuerung
     const audio = document.getElementById("bg-list");
     const btn = document.getElementById("music-btn");
