@@ -14,30 +14,5 @@
             "Pfeffer",
             "Basilikum"
         ]
-    },
-    {
-        "title": "Gemüsepfanne",
-        "desc": "Schnelle Gemüsepfanne mit frischen Kräutern.",
-        "zutaten": [
-            "1 Zucchini",
-            "1 Paprika",
-            "2 Karotten",
-            "1 Zwiebel",
-            "2 EL Olivenöl",
-            "Salz",
-            "Pfeffer",
-            "Kräuter"
-        ]
-    },
-    {
-        "title": "Pfannkuchen",
-        "desc": "Klassische Pfannkuchen, süß oder herzhaft belegbar.",
-        "zutaten": [
-            "250g Mehl",
-            "500ml Milch",
-            "2 Eier",
-            "1 Prise Salz",
-            "Butter zum Braten"
-        ]
     }
 ]
