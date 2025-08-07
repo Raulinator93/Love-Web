@@ -6,8 +6,15 @@
     body {
       margin: 0;
       font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(to bottom right, #ffe4e1, #fff0f5);
-      padding-top: 70px;
+      background: linear-gradient(to bottom right, #ffc0cb, #ffe4e1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      text-align: center;
+      padding-top: 100px;
+      height: 100vh;
     }
 
     nav {
@@ -107,20 +114,6 @@
       font-size: 0.9rem;
     }
 
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(to bottom right, #ffc0cb, #ffe4e1);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      text-align: center;
-      padding: 2rem;
-      height: 100vh;
-    }
-
     nav {
       position: fixed;
       top: 0;
@@ -205,16 +198,6 @@
       font-size: 0.9rem;
     }
 
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(to bottom right, #ffc0cb, #ffe4e1);
-      color: #333;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
-
     nav {
       background-color: #ff6699;
       padding: 1rem 2rem;
@@ -266,3 +249,166 @@
       color: #888;
       font-size: 0.9rem;
     }
+
+    #openPopup {
+  background-color: #ff85a2;
+  color: white;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin: 1rem;
+  font-size: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.4);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popup {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 300px;
+}
+
+.popup input, .popup textarea {
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  resize: none;
+}
+
+.popup-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.popup-buttons button {
+  flex: 1;
+  padding: 0.6rem;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#saveRezept {
+  background-color: #ff6699;
+  color: white;
+}
+
+#closePopup {
+  background-color: #eee;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  width: 100%;
+  margin: 2rem auto;
+}
+
+form label {
+  text-align: left;
+  font-weight: bold;
+  margin-top: 1rem;
+  color: #d6336c;
+}
+
+form input[type="text"],
+form textarea {
+  padding: 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 0.6rem;
+  font-size: 1rem;
+  width: 100%;
+  margin-top: 0.3rem;
+  background-color: #fffafc;
+}
+
+form textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+form button[type="submit"] {
+  margin-top: 2rem;
+  background-color: #ff6699;
+  color: white;
+  padding: 0.8rem;
+  border: none;
+  border-radius: 0.8rem;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+form button[type="submit"]:hover {
+  background-color: #cc3366;
+}
+
+@media (max-width: 600px) {
+  form {
+    padding: 1.5rem;
+  }
+}
+
+
+.rezept-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.rezept-buttons button {
+  padding: 0.8rem 1.5rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  transition: background-color 0.3s ease;
+}
+
+#editRezept {
+  background-color: #ff85a2;
+  color: white;
+}
+
+#editRezept:hover {
+  background-color: #e67294;
+}
+
+#deleteRezept {
+  background-color: #ffdddd;
+  color: #cc0000;
+}
+
+#deleteRezept:hover {
+  background-color: #ffbbbb;
+}

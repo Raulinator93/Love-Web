@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>Rezept bearbeiten ✏️</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <nav>
+    <ul>
+      <li><a href="index.html">Start</a></li>
+      <li><a href="RezeptCollection.html">Zurück zur Übersicht</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <h1>✏️ Rezept bearbeiten</h1>
+    <form id="editForm">
+      <label for="title">Titel:</label>
+      <input type="text" id="title" name="title" required />
+
+      <label for="desc">Beschreibung:</label>
+      <textarea id="desc" name="desc" required></textarea>
+
+      <label for="zutaten">Zutaten (kommagetrennt):</label>
+      <input type="text" id="zutaten" name="zutaten" required />
+
+      <label for="schritte">Schritte (jeweils in neuer Zeile):</label>
+      <textarea id="schritte" name="schritte" required></textarea>
+
+      <button type="submit">💾 Speichern</button>
+    </form>
+  </main>
+
+  <footer>Mit Liebe bearbeitet 💌</footer>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCGCVDmUPQuIeQvblZfv0rBQtpxZdaheAI",
+      authDomain: "love-web-a3854.firebaseapp.com",
+      projectId: "love-web-a3854",
+      storageBucket: "love-web-a3854.firebasestorage.app",
+      messagingSenderId: "843790519171",
+      appId: "1:843790519171:web:e4b43bff1f130dabbf84b6",
+      measurementId: "G-QSH9Y51Q8F"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // Hole Rezept-ID aus URL
+    const url = new URL(window.location.href);
+    const id = url.searchParams.get("id");
+    const form = document.getElementById("editForm");
+
+    if (!id) {
+      alert("Keine Rezept-ID angegeben.");
+      form.innerHTML = "<p>Fehler: Keine Rezept-ID.</p>";
+    } else {
+      const docRef = doc(db, "Rezepte", id);
+      const docSnap = await getDoc(docRef);
+
+      if (!docSnap.exists()) {
+        form.innerHTML = "<p>Rezept nicht gefunden.</p>";
+      } else {
+        const r = docSnap.data();
+
+        // Formularfelder mit Daten füllen
+        document.getElementById("title").value = r.title || "";
+        document.getElementById("desc").value = r.desc || "";
+        document.getElementById("zutaten").value = (r.zutaten || []).join(", ");
+        document.getElementById("schritte").value = (r.schritte || []).join("\n");
+      }
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const title = document.getElementById("title").value.trim();
+        const desc = document.getElementById("desc").value.trim();
+        const zutaten = document.getElementById("zutaten").value.split(",").map(z => z.trim()).filter(Boolean);
+        const schritte = document.getElementById("schritte").value.split("\n").map(s => s.trim()).filter(Boolean);
+
+        try {
+          await updateDoc(docRef, { title, desc, zutaten, schritte });
+          alert("Rezept erfolgreich gespeichert.");
+          window.location.href = `Rezept.html?id=${id}`;
+        } catch (err) {
+          console.error("Fehler beim Speichern:", err);
+          alert("Fehler beim Speichern des Rezepts.");
+        }
+      });
+    }
+  </script>
+</body>
+</html>

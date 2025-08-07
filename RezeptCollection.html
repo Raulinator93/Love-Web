@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Unsere Rezepte 💕</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav>
+    <ul>
+      <li><a href="index.html">Start</a></li>
+      <li><a href=".">Rezepte</a></li>
+      <li><a href="playlist.html">Unsere Playlist</a></li>
+    </ul>
+  </nav>
+
+  <!-- Header -->
+  <header id="start">
+    <h1>🍰 Unsere kleinen Rezepte</h1>
+    <p>Mit Liebe zusammengestellt 💗</p>
+  </header>
+
+  <!-- Rezept-Overlay -->
+  <section id="rezepte">
+    <div class="overlay" id="rezepteOverlay">
+      <!-- Die Rezepte werden hier dynamisch eingefügt -->
+      <p>Lade Rezepte ...</p>
+    </div>
+  </section>
+  <!-- Button zum Öffnen -->
+<button id="openPopup">➕ Rezept hinzufügen</button>
+
+<!-- Pop-up -->
+<div id="popupOverlay" class="popup-overlay">
+  <div class="popup">
+    <h2>Neues Rezept</h2>
+    <input type="text" id="newTitle" placeholder="Titel" />
+    <input type="text" id="newDesc" placeholder="Beschreibung" />
+    <textarea id="newZutaten" placeholder="Zutaten (durch ; trennen)"></textarea>
+    <textarea id="newSchritte" placeholder="Schritte (durch ; trennen)"></textarea>
+    <div id="result"></div>
+    <div class="popup-buttons">
+      <button id="saveRezept">Speichern</button>
+      <button id="closePopup">Abbrechen</button>
+    </div>
+  </div>
+</div>
+
+  <footer>Mit ganz viel Liebe gekocht 💌</footer>
+
+  <!-- Script zum Laden der Rezepte -->
+  <script type="module" src="Rezept.js"></script>
+  <script type="module">
+    import { renderRezepte, addRezept } from './Rezept.js';
+    renderRezepte();
+
+    // Öffnen und Schließen
+    document.getElementById("openPopup").addEventListener("click", () => {
+      document.getElementById("popupOverlay").style.display = "flex";
+    });
+
+    document.getElementById("closePopup").addEventListener("click", () => {
+      document.getElementById("popupOverlay").style.display = "none";
+    });
+
+    document.getElementById("saveRezept").addEventListener("click", async () => {
+      addRezept();
+    });
+  </script>
+</body>
+</html>

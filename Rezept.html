@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>Rezept-Details 💕</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="❤️.ico" type="image/x-icon">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav>
+    <ul>
+      <li><a href="index.html">Start</a></li>
+      <li><a href="RezeptOfTheDay.html">Rezept des Tages</a></li>
+      <li><a href="playlist.html">Unsere Playlist</a></li>
+    </ul>
+  </nav>
+
+  <!-- Hauptinhalt -->
+  <main class="detail-wrapper">
+    <h1>👩‍🍳 Rezept-Anleitung</h1>
+    <p>Schritt für Schritt mit Liebe gekocht 💗</p>
+
+    <section>
+      <div id="rezept-detail" class="rezept-detail">
+        <p>Lade Rezeptdetails ...</p>
+      </div>
+    </section>
+
+    <div id="rezept-buttons" class="rezept-buttons">
+      <button id="editRezept">✏️ Ändern</button>
+      <button id="deleteRezept">🗑️ Löschen</button>
+    </div>
+    
+    <p class="back-link"><a href="RezeptCollection.html">← Zurück zur Übersicht</a></p>
+  </main>
+
+  <footer>Mit ganz viel Liebe gekocht 💌</footer>
+
+  <script type="module" src="Rezept.js"></script>
+  <script type="module">
+    import { renderRezept, deleteRezept } from './Rezept.js';
+    const url = new URL(window.location.href);
+    const id = url.searchParams.get('id');  
+    renderRezept(id);
+
+    document.getElementById("deleteRezept").onclick = async () => {
+      if (confirm("Möchtest du dieses Rezept wirklich löschen?")) {
+        //await db.collection("Rezepte").doc(id).delete();
+        console.log("Löschen gestartet");
+        await deleteRezept(id);
+        alert("Rezept gelöscht.");
+        console.log("Rezept gelöscht:", id);
+        window.location.href = "RezeptCollection.html";
+      }
+    };
+
+    document.getElementById("editRezept").onclick = () => {
+      // Beispiel: Weiterleiten zu Bearbeiten-Seite oder ein Pop-up öffnen
+      window.location.href = `editRezept.html?id=${id}`;
+    };
+  </script>
+</body>
+</html>

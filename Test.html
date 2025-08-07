@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Rezept App</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom right, #ffc0cb, #ffe4e1);
+      padding: 2rem;
+      margin: 0;
+      text-align: center;
+    }
+
+    h1 {
+      color: #d6336c;
+    }
+
+    form {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 12px;
+      max-width: 500px;
+      margin: auto;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    form input, form textarea, form button {
+      display: block;
+      width: 100%;
+      margin-bottom: 1rem;
+      padding: 0.8rem;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+
+    form button {
+      background-color: #ff6699;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    form button:hover {
+      background-color: #e05588;
+    }
+
+    .rezept {
+      background: white;
+      border-radius: 12px;
+      padding: 1rem;
+      margin: 2rem auto;
+      max-width: 600px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      text-align: left;
+    }
+
+    .rezept h3 {
+      color: #cc3366;
+      margin-top: 0;
+    }
+
+    footer {
+      margin-top: 4rem;
+      font-size: 0.9rem;
+      color: #777;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🍓 Rezept App</h1>
+
+  <form id="rezeptForm">
+    <input type="text" id="title" placeholder="Titel" required />
+    <input type="text" id="desc" placeholder="Beschreibung" required />
+    <textarea id="zutaten" placeholder="Zutaten (mit ; getrennt)" required></textarea>
+    <textarea id="schritte" placeholder="Schritte (mit ; getrennt)" required></textarea>
+    <button type="submit">Rezept hinzufügen</button>
+  </form>
+
+  <div id="result"></div>
+  <div id="rezepte"></div>
+
+  <footer>
+    &copy; 2025 Deine Rezeptseite
+  </footer>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+  <script>
+    // ⛔ Replace these values with your Firebase project config!
+    const firebaseConfig = {
+        apiKey: "AIzaSyCGCVDmUPQuIeQvblZfv0rBQtpxZdaheAI",
+        authDomain: "love-web-a3854.firebaseapp.com",
+        projectId: "love-web-a3854",
+        storageBucket: "love-web-a3854.firebasestorage.app",
+        messagingSenderId: "843790519171",
+        appId: "1:843790519171:web:e4b43bff1f130dabbf84b6",
+        measurementId: "G-QSH9Y51Q8F"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    // Add recipe
+    document.getElementById("rezeptForm").addEventListener("submit", async function(e) {
+      e.preventDefault();
+
+      const title = document.getElementById("title").value.trim();
+      const desc = document.getElementById("desc").value.trim();
+      const zutaten = document.getElementById("zutaten").value.split(';').map(z => z.trim());
+      const schritte = document.getElementById("schritte").value.split(';').map(s => s.trim());
+
+      try {
+        await db.collection("Rezepte").add({
+          title,
+          desc,
+          zutaten,
+          schritte
+        });
+
+        document.getElementById("result").textContent = "✅ Rezept erfolgreich gespeichert!";
+        document.getElementById("rezeptForm").reset();
+        loadRezepte();
+      } catch (error) {
+        document.getElementById("result").textContent = "❌ Fehler beim Speichern: " + error.message;
+      }
+    });
+
+    // Load all recipes
+    async function loadRezepte() {
+      const container = document.getElementById("rezepte");
+      container.innerHTML = "";
+
+      const snapshot = await db.collection("rezepte").orderBy("createdAt", "desc").get();
+      snapshot.forEach(doc => {
+        const r = doc.data();
+        container.innerHTML += `
+          <div class="rezept">
+            <h3>${r.title}</h3>
+            <p><strong>Beschreibung:</strong> ${r.desc}</p>
+            <p><strong>Zutaten:</strong> ${r.zutaten.join(', ')}</p>
+            <p><strong>Schritte:</strong></p>
+            <ol>${r.schritte.map(s => `<li>${s}</li>`).join('')}</ol>
+          </div>
+        `;
+      });
+    }
+
+    // Load on page load
+    loadRezepte();
+  </script>
+</body>
+</html>
